@@ -32,9 +32,7 @@ const Posts = () => {
     return <p>Ma'lumotlar yuklanmoqda...</p>;
   }
 
-  const { filteredPosts } = searchContext;
-
-  // console.log(filteredPosts);
+  const { searchTerm } = searchContext;
 
   const togglePost = (postId: number) => {
     setExpandedPosts((prev) => ({
@@ -44,40 +42,30 @@ const Posts = () => {
   };
 
   useEffect(() => {
-    // console.log(cart_id);
-    
-    if (cart_id == "all") {
-      axios
-        .get(
-          "http://localhost:1337/api/blogs?populate[img]=true&populate[categories]=true&populate[user][populate]=*"
-        )
-        .then((data) => {
-          setData(data.data.data);
-          // console.log(data.data.data);
-        });
-    } else {
+    const fetchData = async () => {
       try {
-        axios
-          .get(
-            cart_id
-              ? `http://localhost:1337/api/categories/${cart_id}?populate[blogs][populate][img]=true&populate[blogs][populate][user][populate][profileImage]=true&populate[blogs][populate][user][populate][bannerImage]=true&populate[blogs][populate][categories]=true`
-              : "http://localhost:1337/api/blogs?populate[img]=true&populate[categories]=true&populate[user][populate]=*"
-          )
-          .then((data) => {
-            setData(data.data.data.blogs);
-          });
+        const response = await axios.get(
+          cart_id === "all"
+            ? "http://localhost:1337/api/blogs?populate[img]=true&populate[categories]=true&populate[user][populate]=*"
+            : `http://localhost:1337/api/categories/${cart_id}?populate[blogs][populate][img]=true&populate[blogs][populate][user][populate][profileImage]=true&populate[blogs][populate][user][populate][bannerImage]=true&populate[blogs][populate][categories]=true`
+        );
+        setData(
+          cart_id === "all" ? response.data.data : response.data.data.blogs
+        );
       } catch (error: any) {
-        console.log(error.response.data.error.message || error.message);
+        console.error(error.response?.data?.error?.message || error.message);
       }
-    }
+    };
+
+    fetchData();
   }, [cart_id]);
 
-
-
-  
-
-  return data.length > 0 ? (
-    data.map((post) => (
+  // 🔹 Qidiruv so‘zini qo‘llab filter qilamiz
+  const filteredPosts = data.filter((post) =>
+    post.sarlavha.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  return filteredPosts.length > 0 ? (
+    filteredPosts.map((post) => (
       <div
         className="w-full max-w-[642px] border border-[#E5E7EB] p-[20px] rounded-[5.63px]"
         key={post.id}
@@ -156,54 +144,16 @@ const Posts = () => {
             {expandedPosts[post.id]
               ? "Qisqa shaklda o'qing"
               : "Batafsil shaklda o'qing"}
-            <span className="w-[15px] h-[15px] flex justify-center items-center mb-[2px]">
-              {expandedPosts ? (
-                <svg
-                  width="11"
-                  height="7"
-                  viewBox="0 0 11 7"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  style={{ transform: "rotate(180deg)" }}
-                >
-                  <path
-                    d="M9.61499 1.40991L5.23999 5.78491L0.86499 1.40991"
-                    stroke="#60A5FA"
-                    strokeWidth="1.25"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  width="11"
-                  height="7"
-                  viewBox="0 0 11 7"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M9.61499 1.40991L5.23999 5.78491L0.86499 1.40991"
-                    stroke="#60A5FA"
-                    strokeWidth="1.25"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
-            </span>
           </button>
         </div>
       </div>
     ))
   ) : (
     <div className="w-full flex flex-col justify-center items-center gap-[30px]">
-      <div className="w-full max-w-[120px] mx-auto">
-        <img src={EmptyList} alt="" className="w-full" />
-      </div>
-      <div className="">
-        <h1 className="font-openSans font-normal leading-[22.5px] text-[15px] text-[#6B7280]">Hozirda bu ruknda postlar yo'q</h1>
-      </div>
+      <img src={EmptyList} alt="" className="w-full max-w-[120px] mx-auto" />
+      <h1 className="font-openSans font-normal leading-[22.5px] text-[15px] text-[#6B7280]">
+        Hozirda bu ruknda postlar yo'q
+      </h1>
     </div>
   );
 };
