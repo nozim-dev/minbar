@@ -22,9 +22,9 @@ const Header = () => {
 
   return (
     <header className="w-full max-w-[1140px] mx-auto flex justify-between gap-[20px] pt-[50px]">
-      <Link to="/" className="w-full max-w-[52px] h-[41px]">
+      <a href="/" className="w-full max-w-[52px] h-[41px]">
         <img src={logo} alt="" />
-      </Link>
+      </a>
       <div className="w-full max-w-[547px] bg-[#fff] p-[11.25px] flex gap-[11.25px] border shadow-shadowInput rounded-[5.63px] hover:border-[black] items-center">
         <span className="w-[22.5px] h-[22.5px] flex justify-center items-center">
           <svg
