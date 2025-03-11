@@ -14,40 +14,45 @@ import Post from "./Pages/Post.tsx";
 import Users from "./Pages/Users.tsx";
 import User from "./Pages/User.tsx";
 import Error from "./Pages/Error.tsx";
+import UserPosts from "./Pages/UserPosts.tsx";
+import { SearchProvider } from "./Contexts/SearchContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainLayout />} errorElement={<Error />}>
-          <Route
-            path="/"
-            element={<NavigationLayout />}
-            errorElement={<Error />}
-          >
+    <SearchProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainLayout />} errorElement={<Error />}>
             <Route
               path="/"
-              element={<CategoryLayout />}
+              element={<NavigationLayout />}
               errorElement={<Error />}
             >
+              <Route path="/userposts" element={<UserPosts />} />
               <Route
-                path=":category_id"
-                element={<Posts />}
+                path="/"
+                element={<CategoryLayout />}
                 errorElement={<Error />}
               >
-                <Route path=":cart_id" element={<Cart />} />
+                <Route
+                  path=":category_id"
+                  element={<Posts />}
+                  errorElement={<Error />}
+                >
+                  <Route path=":cart_id" element={<Cart />} />
+                </Route>
               </Route>
+              <Route path="/post" element={<Post />} />
+              <Route path="/users" element={<Users />} errorElement={<Error />}>
+                <Route path=":user_id" element={<User />} />
+              </Route>
+              <Route path="/profile" element={<Profile />} />
             </Route>
-            <Route path="/post" element={<Post />} />
-            <Route path="/users" element={<Users />} errorElement={<Error />}>
-              <Route path=":user_id" element={<User />} />
-            </Route>
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-up" element={<SignUp />} />
           </Route>
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </SearchProvider>
   </StrictMode>
 );

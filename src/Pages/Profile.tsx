@@ -50,7 +50,7 @@ const Profile = () => {
     try {
       if (typeof DefaultUserData.profileImage === "object") {
         setProfileImage(DefaultUserData.profileImage.url);
-        console.log(DefaultUserData.profileImage.url);
+        // console.log(DefaultUserData.profileImage.url);
       } else {
         const profileRes = await apiClient.get(
           `/api/upload/files/${DefaultUserData.profileImage}`
@@ -60,7 +60,7 @@ const Profile = () => {
 
       if (typeof DefaultUserData.bannerImage === "object") {
         setBannerImage(DefaultUserData.bannerImage.url);
-        console.log(DefaultUserData.bannerImage.url);
+        // console.log(DefaultUserData.bannerImage.url);
       } else {
         const bannerRes2 = await apiClient.get(
           `/api/upload/files/${DefaultUserData.bannerImage}`
@@ -141,7 +141,7 @@ const Profile = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(DefaultUserData);
+    // console.log(DefaultUserData);
 
     try {
       const response = await apiClient.put(`/api/users/${DefaultUserData.id}`, {
@@ -219,36 +219,44 @@ const Profile = () => {
                     Create Profile
                   </h2>
                 </div>
-                <Link
-                  to="/post"
-                  className="w-full max-w-[120px] py-[7.5px] rounded-[3.75px] bg-[#37B21F] font-openSans font-normal leading-[22.5px] text-[15px] border text-[#fff] hover:border-[#37B21F] hover:bg-[#fff] hover:text-[#37B21F] transition-all flex justify-center items-center gap-[6px] group"
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                <div className="flex gap-4 w-full max-w-[250px]">
+                  <Link
+                    to='/userposts'
+                    className="w-full max-w-[120px] py-[7.5px] rounded-[3.75px] bg-[#37B21F] font-openSans font-normal leading-[22.5px] text-[15px] border text-[#fff] hover:border-[#37B21F] hover:bg-[#fff] hover:text-[#37B21F] transition-all flex justify-center items-center gap-[6px] group"
                   >
-                    <path
-                      d="M4.46001 19.24L19.25 4.45L15.55 0.75L0.759995 15.54L0.75 19.25L4.46001 19.24Z"
-                      stroke="white"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="group-hover:stroke-[#37B21F] transition"
-                    />
-                    <path
-                      d="M13.35 4.13L15.87 6.64999"
-                      stroke="white"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="group-hover:stroke-[#37B21F] transition"
-                    />
-                  </svg>
-                  Add Post
-                </Link>
+                    Posts
+                  </Link>
+                  <Link
+                    to="/post"
+                    className="w-full max-w-[120px] py-[7.5px] rounded-[3.75px] bg-[#37B21F] font-openSans font-normal leading-[22.5px] text-[15px] border text-[#fff] hover:border-[#37B21F] hover:bg-[#fff] hover:text-[#37B21F] transition-all flex justify-center items-center gap-[6px] group"
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M4.46001 19.24L19.25 4.45L15.55 0.75L0.759995 15.54L0.75 19.25L4.46001 19.24Z"
+                        stroke="white"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="group-hover:stroke-[#37B21F] transition"
+                      />
+                      <path
+                        d="M13.35 4.13L15.87 6.64999"
+                        stroke="white"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="group-hover:stroke-[#37B21F] transition"
+                      />
+                    </svg>
+                    Add Post
+                  </Link>
+                </div>
               </div>
               <form onSubmit={handleSubmit}>
                 <div
@@ -276,7 +284,7 @@ const Profile = () => {
                         onChange={handleChange}
                       />
 
-                      <label htmlFor="profileImage">
+                      <label htmlFor="profileImage" className="cursor-pointer">
                         {isUploading ? (
                           <div>Loading...</div>
                         ) : (

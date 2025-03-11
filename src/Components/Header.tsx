@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import logo from "./image/logo.jpeg";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { SearchContext } from "../Contexts/SearchContext";
+
 const Header = () => {
   const [user, setUser] = useState<{ username?: string }>({});
 
@@ -10,12 +12,20 @@ const Header = () => {
     setUser(userData);
   }, []);
 
+  const searchContext = useContext(SearchContext);
+
+  if (!searchContext) {
+    return null; // Agar Context yuklanmagan bo'lsa, hech narsa qaytarmaydi
+  }
+
+  const { searchTerm, setSearchTerm } = searchContext;
+
   return (
     <header className="w-full max-w-[1140px] mx-auto flex justify-between gap-[20px] pt-[50px]">
       <a href="/category/all" className="w-full max-w-[52px] h-[41px]">
         <img src={logo} alt="" />
       </a>
-      <div className="w-full max-w-[547px] bg-[#fff] p-[11.25px] flex gap-[11.25px] border shadow-shadowInput rounded-[5.63px] hover:border-[black]">
+      <div className="w-full max-w-[547px] bg-[#fff] p-[11.25px] flex gap-[11.25px] border shadow-shadowInput rounded-[5.63px] hover:border-[black] items-center">
         <span className="w-[22.5px] h-[22.5px] flex justify-center items-center">
           <svg
             width="19"
@@ -39,10 +49,14 @@ const Header = () => {
           name="search"
           id="search"
           placeholder="Minbar.uz dan qidiring"
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
       <div className="w-full max-w-[280px] flex gap-[10px]">
-        <Link to="/users" className="w-full max-w-[182px] flex gap-[7.5px] items-center font-openSans font-normal leading-[22.5px] text-[15px] text-[#6B7280] border border-[#fff] hover:border-[#6B7280] rounded-[3.75px]">
+        <Link
+          to="/users"
+          className="w-full max-w-[182px] flex gap-[7.5px] items-center font-openSans font-normal leading-[22.5px] text-[15px] text-[#6B7280] border border-[#fff] hover:border-[#6B7280] rounded-[3.75px] p-3"
+        >
           <span className="w-[33.75px] h-[33.75px] flex justify-center items-center">
             <svg
               width="27"

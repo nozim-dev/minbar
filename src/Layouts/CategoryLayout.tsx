@@ -1,6 +1,5 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet,  } from "react-router-dom";
 import Aside from "../Components/Aside";
-import { useEffect } from "react";
 
 const CategoryLayout = () => {
   // const navigate = useNavigate();
