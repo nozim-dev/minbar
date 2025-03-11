@@ -18,7 +18,7 @@ const Header = () => {
     return null; // Agar Context yuklanmagan bo'lsa, hech narsa qaytarmaydi
   }
 
-  const { searchTerm, setSearchTerm } = searchContext;
+  const { setSearchTerm } = searchContext;
 
   return (
     <header className="w-full max-w-[1140px] mx-auto flex justify-between gap-[20px] pt-[50px]">
